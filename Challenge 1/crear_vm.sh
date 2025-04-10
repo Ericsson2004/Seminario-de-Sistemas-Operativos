@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Verificar si se pasaron los parámetros correctos
+# Verificar que los datos sean correctos
 if [ $# -ne 8 ]; then
     echo "Uso: $0 <NombreVM> <SO> <CPUs> <RAM (GB)> <VRAM (MB)> <TamañoDisco (GB)> <SATAController> <IDEController>"
     exit 1
 fi
 
-# Asignar valores a las variables
+# Dar valores a las variables
 nombreMV=$1
 SO=$2
 cpus=$3
@@ -16,14 +16,14 @@ discoTamanoGB=$6
 controladorSATA=$7
 controladorIDE=$8
 
-# Crear carpeta para la VM
+# Crear carpeta para la Maquina Virtual
 directorioVM="$HOME/VMs/$nombreMV"
 mkdir -p "$directorioVM"
 
-# Ruta del archivo del disco virtual (.vmdk)
+# Direcció del archivo del disco virtual
 discoVMDK="$directorioVM/$nombreMV.vmdk"
 
-# Crear archivo de configuración de la máquina virtual (.vmx)
+# Crear archivo de configuración de la máquina virtual
 echo "Creando archivo de configuración de la máquina virtual..."
 cat <<EOL > "$directorioVM/$nombreMV.vmx"
 config.version = "8"
@@ -42,7 +42,7 @@ ide1:0.present = "TRUE"
 ide1:0.deviceType = "cdrom-raw"
 EOL
 
-# Crear el disco duro virtual (.vmdk) de acuerdo con el tamaño proporcionado
+# Crear el disco duro virtual
 echo "Creando disco virtual de ${discoTamanoGB} GB..."
 fallocate -l "${discoTamanoGB}G" "$discoVMDK" 2>/dev/null || touch "$discoVMDK"
 
